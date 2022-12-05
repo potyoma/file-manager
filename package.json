@@ -1,0 +1,11 @@
+{
+  "name": "file-manager",
+  "version": "1.0.0",
+  "description": "Solution for task at RSSchool",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "potyoma",
+  "license": "ISC"
+}

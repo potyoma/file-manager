@@ -1,4 +1,5 @@
 import fs from "fs/promises"
+
 import EntryType from "../enums/entryType.js"
 import { exists, applyToAllFiles } from "./utils.js"
 
@@ -8,6 +9,7 @@ const list = async path => {
   const entries = []
 
   const dir = await fs.opendir(path)
+
   await applyToAllFiles(dir, entry =>
     entries.push({
       name: entry.name,

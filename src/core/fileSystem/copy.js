@@ -1,12 +1,14 @@
+import { createReadStream, createWriteStream } from "fs"
+import { pipeline } from "stream/promises"
+import { exists } from "./utils.js"
+
 const copy = async (from, to) => {
   if (!(await exists(from)) || (await exists(to)))
     throw Error("FS operation failed")
 
-  await fs.mkdir(to)
-  const dir = await fs.opendir(from)
-  await applyToAllFiles(
-    dir,
-    async entry =>
-      await fs.copyFile(join(from, entry.name), join(to, entry.name))
-  )
+  const read = createReadStream(from)
+  const write = createWriteStream(to)
+  await pipeline(read, write)
 }
+
+export default copy

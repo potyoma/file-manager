@@ -1,4 +1,4 @@
-import { access, readFile } from "fs/promises"
+import { access, readFile, lstat } from "fs/promises"
 
 const exists = async path => {
   try {
@@ -7,6 +7,11 @@ const exists = async path => {
   } catch {
     return false
   }
+}
+
+const isFile = async path => {
+  const stat = await lstat(path)
+  return stat.isFile()
 }
 
 const applyToAllFiles = async (dir, fn) => {
@@ -21,4 +26,4 @@ const applyToFile = async (path, fn) => {
   return fn?.(buffer)
 }
 
-export { exists, applyToAllFiles, applyToFile }
+export { exists, applyToAllFiles, applyToFile, isFile }

@@ -1,5 +1,6 @@
 import { createReadStream, createWriteStream } from "fs"
-import { createGzip, createGunzip } from "zlib"
+import { createBrotliCompress, createBrotliDecompress } from "zlib"
+import { pipeline } from "stream/promises"
 
 const createStreams = (read, write) => [
   createReadStream(read),
@@ -8,14 +9,14 @@ const createStreams = (read, write) => [
 
 const compress = async (file, archive) => {
   const [input, output] = createStreams(file, archive)
-  const gzip = createGzip()
-  input.pipe(gzip).pipe(output)
+  const gzip = createBrotliCompress()
+  await pipeline(input, gzip, output)
 }
 
 const decompress = async (archive, file) => {
   const [input, output] = createStreams(archive, file)
-  const decompressStream = createGunzip()
-  input.pipe(decompressStream).pipe(output)
+  const decompressStream = createBrotliDecompress()
+  await pipeline(input, decompressStream, output)
 }
 
 export { compress, decompress }
